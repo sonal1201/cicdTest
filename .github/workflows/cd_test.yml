@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: SSH Into server
         run: | 
-            echo ${{ secrets.SSH_PRIVATE_KEY }} &> ~/ssh_key 
+            echo ${{ secrets.SSH_PRIVATE_KEY }} > ~/ssh_key 
             ssh -i ~/ssh_key  ubuntu@3.108.220.143
             cd cicdTest/ && git pull
             pnpm install
