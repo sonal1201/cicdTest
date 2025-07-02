@@ -1,0 +1,21 @@
+name:  deploy to testing
+on:
+  push:
+      branches: 
+        - "master"
+
+jobs:
+  redeploy_everything:
+    name: Deploying Everything to the staging cluster
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH Into server
+        run: | 
+            echo ${{ secrets.SSH_PRIVATE_KEY }} &> ~/ssh_key 
+            ssh -i ~/ssh_key  ubuntu@3.108.220.143
+            cd cicdTest/ && git pull
+            pnpm install
+            pnpm run build
+            pm2 restart fe-server 
+            pm2 restart http-server 
+            pm2 restart ws-server 
