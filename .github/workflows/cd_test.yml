@@ -9,13 +9,16 @@ jobs:
     name: Deploying Everything to the staging cluster
     runs-on: ubuntu-latest
     steps:
-      - name: SSH Into server
-        run: | 
-            echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/ssh_key 
-            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ssh_key ubuntu@3.108.220.143 << 'EOF'
-            cd cicdTest/ && git pull
+      - name: SSH into server and deploy
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_key
+          chmod 600 ssh_key
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ssh_key ubuntu@3.108.220.143 << 'EOF'
+            cd cicdTest/
+            git pull
             pnpm install
             pnpm run build
-            pm2 restart fe-server 
-            pm2 restart http-server 
-            pm2 restart ws-server 
+            pm2 restart fe-server
+            pm2 restart http-server
+            pm2 restart ws-server
+          EOF
