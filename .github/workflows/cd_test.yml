@@ -14,6 +14,7 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_key
           chmod 600 ssh_key
           ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ssh_key ubuntu@3.108.220.143 << 'EOF'
+            source ~/.bashrc
             cd cicdTest/
             git pull
             pnpm install
