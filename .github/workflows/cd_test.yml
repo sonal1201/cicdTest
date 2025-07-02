@@ -12,7 +12,7 @@ jobs:
       - name: SSH Into server
         run: | 
             echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/ssh_key 
-            ssh -i ~/ssh_key  ubuntu@3.108.220.143
+            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ssh_key ubuntu@3.108.220.143 << 'EOF'
             cd cicdTest/ && git pull
             pnpm install
             pnpm run build
