@@ -1,8 +1,8 @@
-name:  deploy to testing
+name: deploy to testing
 on:
   push:
-      branches: 
-        - "master"
+    branches:
+      - "master"
 
 jobs:
   redeploy_everything:
@@ -14,9 +14,9 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_key
           chmod 600 ssh_key
           ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ssh_key ubuntu@3.108.220.143 << 'EOF'
-            source ~/.bashrc
+            source export PATH=/home/ubuntu/.nvm/versions/node/v22.17.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
             cd cicdTest/
-            git pull
+            git pull origin master
             pnpm install
             pnpm run build
             pm2 restart fe-server
